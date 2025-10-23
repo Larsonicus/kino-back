@@ -24,4 +24,9 @@ class Movie extends Model
         'countries' => 'array',
         'rating_kinopoisk' => 'float',
     ];
+
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
+    }
 }
