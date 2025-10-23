@@ -4,12 +4,15 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\SeatController;
 use App\Http\Controllers\HallController;
 use App\Http\Controllers\CinemaController;
+use App\Http\Controllers\MovieController;
 
 
-Route::apiResource('cities', CityController::class);
+Route::apiResource('city', CityController::class);
 
-Route::apiResource('seats', SeatController::class);
+Route::apiResource('seat', SeatController::class);
 
-Route::apiResource('halls', HallController::class);
+Route::apiResource('hall', HallController::class);
 
-Route::apiResource('cinemas', CinemaController::class);
+Route::apiResource('cinema', CinemaController::class);
+
+Route::apiResource('movie', MovieController::class);

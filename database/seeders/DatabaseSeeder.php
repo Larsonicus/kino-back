@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
             CitiesTableSeeder::class,
             CinemasTableSeeder::class,
             HallsTableSeeder::class,
-            SeatsTableSeeder::class
+            SeatsTableSeeder::class,
+            MoviesTableSeeder::class
         ]);
     }
 }
