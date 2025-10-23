@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             CitiesTableSeeder::class,
+            HallsTableSeeder::class,
+            SeatsTableSeeder::class
         ]);
     }
 }
