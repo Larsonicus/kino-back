@@ -8,16 +8,16 @@ class Hall extends Model
 {
     protected $fillable = [
         'name',
-        'city_id',
+        'cinema_id',
     ];
 
-    public function city()
+    public function cinema()
     {
-        return $this->belongsTo(City::class);
+        return $this->belongsTo(Cinema::class);
     }
 
-    public function places()
+    public function seat()
     {
-        return $this->hasMany(Place::class);
+        return $this->hasMany(Seat::class);
     }
 }
