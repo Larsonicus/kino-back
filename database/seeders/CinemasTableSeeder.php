@@ -13,8 +13,8 @@ class CinemasTableSeeder extends Seeder
             [
                 'city_id' => 1,
                 'address' => 'ул. Ленина, 10',
-                'lat' => 55.7558,   // широта
-                'long' => 37.6173,  // долгота
+                'lat' => 55.7558,
+                'long' => 37.6173,
             ],
             [
                 'city_id' => 1,

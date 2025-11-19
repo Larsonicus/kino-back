@@ -22,4 +22,9 @@ class Cinema extends Model
     {
         return $this->hasMany(Hall::class);
     }
+
+    public function cinemaSchedules()
+    {
+        return $this->hasMany(CinemaSchedules::class);
+    }
 }

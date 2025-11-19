@@ -21,8 +21,6 @@ class CitiesTableSeeder extends Seeder
             ['name' => 'Казань', 'lat' => 55.7903, 'long' => 49.1347],
         ];
 
-        foreach ($cities as $city) {
-            City::create($city);
-        }
+        City::insert($cities);
     }
 }

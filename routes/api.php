@@ -6,6 +6,9 @@ use App\Http\Controllers\HallController;
 use App\Http\Controllers\CinemaController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\CinemaScheduleController;
+use App\Http\Controllers\HallScheduleController;
+use App\Http\Controllers\SessionController;
 
 Route::apiResource('city', CityController::class);
 
@@ -18,3 +21,9 @@ Route::apiResource('cinema', CinemaController::class);
 Route::apiResource('movie', MovieController::class);
 
 Route::apiResource('schedule', ScheduleController::class);
+
+Route::apiResource('cinema-schedule', CinemaScheduleController::class);
+
+Route::apiResource('hall-schedule', HallScheduleController::class);
+
+Route::apiResource('session', SessionController::class);

@@ -17,4 +17,9 @@ class Seat extends Model
     {
         return $this->belongsTo(Hall::class);
     }
+
+    public function sessions()
+    {
+        return $this->belongsToMany(Session::class, 'sessions_seats_reserve')->withTimestamps();
+    }
 }

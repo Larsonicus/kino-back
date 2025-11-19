@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Schedule extends Model
 {
-    protected $table = 'schedules';
-
     protected $fillable = [
         'date',
         'movie_id',
@@ -20,5 +18,10 @@ class Schedule extends Model
     public function movie()
     {
         return $this->belongsTo(Movie::class);
+    }
+
+    public function cinemaSchedules()
+    {
+        return $this->hasMany(CinemaSchedules::class);
     }
 }
