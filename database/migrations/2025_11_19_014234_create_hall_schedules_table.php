@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('hall_schedules', function (Blueprint $table) {
             $table->id();
             $table->foreignId('hall_id')->constrained('halls')->onDelete('cascade');
+            $table->foreignId('cinema_schedule_id')->constrained('cinema_schedules')->onDelete('cascade');
             $table->timestamps();
         });
     }

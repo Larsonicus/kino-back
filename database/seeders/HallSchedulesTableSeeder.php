@@ -12,6 +12,7 @@ class HallSchedulesTableSeeder extends Seeder
         for ($i = 1; $i <= 4; $i++) {
             HallSchedule::create([
                 'hall_id' => $i,
+                'cinema_schedule_id' => 1
             ]);
         }
     }

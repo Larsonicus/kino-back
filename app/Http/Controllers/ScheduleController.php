@@ -4,12 +4,33 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Schedule;
+use App\Http\Resources\ScheduleResource;
+use App\Dto\GetSchedulesDto;
 
 class ScheduleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Schedule::all());
+        $dto = GetSchedulesDto::fromRequest($request);
+
+        $schedules = Schedule::with([
+            'movie',
+            'cinemaSchedules.cinema.city',
+            'cinemaSchedules.hallSchedules.hall',
+            'cinemaSchedules.hallSchedules.sessions.reservedSeats'
+        ])
+        ->whereDate('date', $dto->date)
+        ->get()
+        ->map(function($schedule) {
+            $schedule->setRelation('cinemaSchedules',
+                $schedule->cinemaSchedules->filter(function($cinemaSchedule) {
+                    return $cinemaSchedule->hallSchedules->isNotEmpty();
+                })
+            );
+            return $schedule;
+        });;
+
+        return ScheduleResource::collection($schedules);
     }
 
     public function store(Request $request)

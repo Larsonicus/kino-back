@@ -20,4 +20,9 @@ class CinemaSchedule extends Model
     {
         return $this->belongsTo(Cinema::class);
     }
+
+    public function hallSchedules()
+    {
+        return $this->hasMany(HallSchedule::class);
+    }
 }

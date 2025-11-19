@@ -22,6 +22,6 @@ class Schedule extends Model
 
     public function cinemaSchedules()
     {
-        return $this->hasMany(CinemaSchedules::class);
+        return $this->hasMany(CinemaSchedule::class);
     }
 }

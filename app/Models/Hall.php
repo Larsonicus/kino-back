@@ -16,7 +16,7 @@ class Hall extends Model
         return $this->belongsTo(Cinema::class);
     }
 
-    public function seat()
+    public function seats()
     {
         return $this->hasMany(Seat::class);
     }
