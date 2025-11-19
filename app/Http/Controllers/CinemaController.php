@@ -4,13 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Cinema;
 use Illuminate\Http\Request;
+use App\Http\Resources\CinemaResource;
+use App\Dto\GetCinemasDto;
 
 class CinemaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $cinemas = Cinema::all();
-        return response()->json($cinemas);
+        $dto = GetCinemasDto::fromRequest($request);
+
+        $cinemas = Cinema::where('city_id', $dto->cityId)->get();
+
+        return CinemaResource::collection($cinemas);
     }
 
     public function store(Request $request)
@@ -30,7 +35,7 @@ class CinemaController extends Controller
     public function show($id)
     {
         $cinema = Cinema::findOrFail($id);
-        return response()->json($cinema);
+        return new CinemaResource($cinema);
     }
 
     public function update(Request $request, $id)
