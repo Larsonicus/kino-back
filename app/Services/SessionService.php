@@ -48,7 +48,6 @@ class SessionService
     {
         $session = Session::findOrFail($sessionId);
 
-        // Проверяем, что места свободны
         $alreadyBooked = $session->reservedSeats()
             ->whereIn('seat_id', $seatIds)
             ->exists();

@@ -12,7 +12,7 @@ class CinemaScheduleResource extends JsonResource
             'id' => $this->id,
             'scheduleId' => $this->schedule_id,
             'cinemaId' => $this->cinema_id,
-            'cinema' => $this->cinema,
+            'cinema' => new CinemaResource($this->cinema),
             'listHallSchedule' => HallScheduleResource::collection($this->hallSchedules),
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at,
