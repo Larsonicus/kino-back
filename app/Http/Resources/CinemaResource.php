@@ -10,10 +10,13 @@ class CinemaResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            // name
+            // workingHours
             'cityId' => $this->city_id,
-            'address' => $this->location,
-            'lat' => $this->lat,
-            'long' => $this->long,
+            'city' => $this->city->name,
+            'address' => $this->address,
+            'latitude' => $this->lat,
+            'longitude' => $this->long,
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at,
         ];

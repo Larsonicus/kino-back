@@ -24,7 +24,7 @@ class SessionResource extends JsonResource
             'hallId' => $this->hall_id,
             'startTime' => $this->start_time,
             'endTime' => $this->end_time,
-            'listSelectedSeats' => SessionSeatResource::collection($seatsWithReservation),
+            'listSelectedSeat' => SessionSeatResource::collection($seatsWithReservation),
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at,
         ];
