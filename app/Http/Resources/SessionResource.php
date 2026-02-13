@@ -11,7 +11,7 @@ class SessionResource extends JsonResource
     {
         $allSeats = Seat::where('hall_id', $this->hall_id)->get();
 
-        $reservedSeatIds = $this->reservedSeats->pluck('id')->toArray();
+        $reservedSeatIds = $this->reservedSeats ? $this->reservedSeats->pluck('id')->toArray() : [];
 
         $seatsWithReservation = $allSeats->map(function($seat) use ($reservedSeatIds) {
             $seat->isReserved = in_array($seat->id, $reservedSeatIds);

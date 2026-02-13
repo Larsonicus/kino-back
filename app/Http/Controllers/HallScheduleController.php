@@ -4,12 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\HallSchedule;
 use Illuminate\Http\Request;
+use App\Http\Resources\HallScheduleResource;
 
 class HallScheduleController extends Controller
 {
     public function index()
     {
         return HallSchedule::all();
+    }
+
+    public function show($id)
+    {
+        $hallSchedule = HallSchedule::findOrFail($id);
+        return new HallScheduleResource($hallSchedule);
     }
 
     public function store(Request $request)
@@ -19,11 +26,6 @@ class HallScheduleController extends Controller
         ]);
 
         return HallSchedule::create($validated);
-    }
-
-    public function show($id)
-    {
-        return HallSchedule::findOrFail($id);
     }
 
     public function update(Request $request, $id)
