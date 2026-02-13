@@ -2,18 +2,17 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class HallResource extends JsonResource
+class UserResource extends JsonResource
 {
-    public function toArray($request)
+    public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'cinemaId' => $this->cinema_id,
-            'rowNumber' => $this->rowNumber,
-            'seatNumber' => $this->seatNumber,
+            'email' => $this->email,
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at,
         ];

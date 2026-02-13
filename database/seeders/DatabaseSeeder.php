@@ -27,7 +27,8 @@ class DatabaseSeeder extends Seeder
             CinemaSchedulesTableSeeder::class,
             HallSchedulesTableSeeder::class,
             HallsSessionsTableSeeder::class,
-            SessionsSeatsReserveTableSeeder::class
+            SessionsSeatsReserveTableSeeder::class,
+            PermissionsSeeder::class
         ]);
     }
 }

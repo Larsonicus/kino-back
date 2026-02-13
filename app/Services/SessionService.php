@@ -43,19 +43,4 @@ class SessionService
             'seats' => $seatsStatus,
         ];
     }
-
-    public function reserveSeats(int $sessionId, array $seatIds): void
-    {
-        $session = Session::findOrFail($sessionId);
-
-        $alreadyBooked = $session->reservedSeats()
-            ->whereIn('seat_id', $seatIds)
-            ->exists();
-
-        if ($alreadyBooked) {
-            throw new \Exception('Некоторые места уже забронированы');
-        }
-
-        $session->reservedSeats()->attach($seatIds);
-    }
 }

@@ -10,8 +10,9 @@ class CinemaResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            // name
-            // workingHours
+            'name' => $this->name,
+            'workingHours' => $this->working_hours,
+            'contactNumber' => $this->contact_number,
             'cityId' => $this->city_id,
             'city' => $this->city->name,
             'address' => $this->address,
@@ -19,6 +20,7 @@ class CinemaResource extends JsonResource
             'longitude' => $this->long,
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at,
+            'halls' => HallResource::collection($this->halls),
         ];
     }
 }

@@ -11,6 +11,9 @@ class Cinema extends Model
         'address',
         'lat',
         'long',
+        'contact_number',
+        'working_hours',
+        'name',
     ];
 
     public function city()

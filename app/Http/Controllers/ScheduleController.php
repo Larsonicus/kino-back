@@ -28,7 +28,7 @@ class ScheduleController extends Controller
                 })
             );
             return $schedule;
-        });;
+        });
 
         return ScheduleResource::collection($schedules);
     }

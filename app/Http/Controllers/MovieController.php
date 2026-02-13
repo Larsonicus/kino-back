@@ -48,7 +48,7 @@ class MovieController extends Controller
             'year' => 'sometimes|integer',
             'genres' => 'sometimes|array',
             'countries' => 'sometimes|array',
-            'rating_kinopoisk' => 'nullable|numeric',
+            'ratingKinopoisk' => 'nullable|numeric',
         ]);
 
         $movie->update($data);

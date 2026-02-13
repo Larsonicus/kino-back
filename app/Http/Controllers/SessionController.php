@@ -21,16 +21,4 @@ class SessionController extends Controller
         $session = $this->sessionService->getSessionWithSeatsStatus($id);
         return response()->json($session);
     }
-
-    public function reserveSeats(Request $request, $id)
-    {
-        $validated = $request->validate([
-            'seat_ids' => 'required|array',
-            'seat_ids.*' => 'integer|exists:seats,id',
-        ]);
-
-        $this->sessionService->reserveSeats($id, $validated['seat_ids']);
-
-        return response()->json(['message' => 'Места успешно забронированы']);
-    }
 }

@@ -11,6 +11,8 @@ class Hall extends Model
         'cinema_id',
     ];
 
+    protected $appends = ['rowNumber', 'seatNumber'];
+
     public function cinema()
     {
         return $this->belongsTo(Cinema::class);
@@ -19,5 +21,15 @@ class Hall extends Model
     public function seats()
     {
         return $this->hasMany(Seat::class);
+    }
+
+    public function getRowNumberAttribute()
+    {
+        return $this->seats()->max('row') ?? 0;
+    }
+
+    public function getSeatNumberAttribute()
+    {
+        return $this->seats()->max('col') ?? 0;
     }
 }

@@ -5,80 +5,95 @@ namespace App\Http\Controllers;
 use App\Models\Hall;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Resources\HallResource;
+use App\Dto\HallDto;
+use App\Dto\PartialHallDto;
 
 class HallController extends Controller
 {
     public function index()
     {
-        $halls = DB::table('halls')
-            ->leftJoin('seats', 'halls.id', '=', 'seats.hall_id')
-            ->select(
-                'halls.id',
-                'halls.name',
-                DB::raw('MAX(seats.row) as rows'),
-                DB::raw('MAX(seats.col) as cols')
-            )
-            ->groupBy('halls.id', 'halls.name')
-            ->get();
+        $halls = Hall::all();
 
-        return response()->json($halls);
-    }
-
-    /**
-     * Создать новый зал
-     */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'city_id' => 'required|exists:cities,id',
-        ]);
-
-        $hall = Hall::create($validated);
-
-        return response()->json($hall, 201);
+        return HallResource::collection($halls);
     }
 
     public function show($id)
     {
-        $hall = DB::table('halls')
-            ->leftJoin('seats', 'halls.id', '=', 'seats.hall_id')
-            ->where('halls.id', $id)
-            ->select(
-                'halls.id',
-                'halls.name',
-                DB::raw('MAX(seats.row) as rows'),
-                DB::raw('MAX(seats.col) as cols')
-            )
-            ->groupBy('halls.id', 'halls.name')
-            ->first();
+        $hall = Hall::find($id);
 
         if (!$hall) {
             return response()->json(['message' => 'Hall not found'], 404);
         }
 
-        return response()->json($hall);
+        return new HallResource($hall);
     }
 
-    public function update(Request $request, $id)
+    public function store(Request $request)
+    {
+        $dto = HallDto::fromRequest($request);
+
+
+        $seats = [];
+        for ($row = 1; $row <= $dto->rowNumber; $row++) {
+            for ($col = 1; $col <= $dto->seatNumber; $col++) {
+                $seats[] = [
+                    'row' => $row,
+                    'col' => $col,
+                    'price' => rand(500, 2500),
+                ];
+            }
+        }
+
+        $hall = Hall::create($dto->toArray());
+        $hall->seats()->createMany($seats);
+
+        return new HallResource($hall);;
+    }
+
+    public function update(Request $request, int $id)
     {
         $hall = Hall::findOrFail($id);
 
-        $validated = $request->validate([
-            'name' => 'sometimes|string|max:255',
-            'city_id' => 'sometimes|exists:cities,id',
-        ]);
+        $dto = PartialHallDto::fromRequest($request);
 
-        $hall->update($validated);
+        $hall->update($dto->toArray());
 
-        return response()->json($hall);
+        $currentRows = $hall->rowNumber;
+        $currentCols = $hall->seatNumber;
+
+        $newRows = $dto->rowNumber ?? $currentRows;
+        $newCols = $dto->seatNumber ?? $currentCols;
+
+        if ($newRows > $currentRows || $newCols > $currentCols) {
+            $newSeats = [];
+
+            for ($row = 1; $row <= $newRows; $row++) {
+                for ($col = 1; $col <= $newCols; $col++) {
+                    if (!$hall->seats()->where(['row' => $row, 'col' => $col])->exists()) {
+                        $newSeats[] = [
+                            'row' => $row,
+                            'col' => $col,
+                            'price' => rand(500, 2500),
+                        ];
+                    }
+                }
+            }
+
+            if (!empty($newSeats)) {
+                $hall->seats()->createMany($newSeats);
+            }
+        }
+
+        return new HallResource($hall);
     }
+
 
     public function destroy($id)
     {
         $hall = Hall::findOrFail($id);
         $hall->delete();
 
-        return response()->json(['message' => 'Hall deleted']);
+        return response()->noContent();
     }
 }

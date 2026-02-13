@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Spatie\Permission\PermissionServiceProvider;
+use Illuminate\Http\Resources\Json\JsonResource;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->register(PermissionServiceProvider::class);
     }
 
     /**
@@ -19,6 +22,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        JsonResource::withoutWrapping();
     }
 }

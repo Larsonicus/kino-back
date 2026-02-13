@@ -9,21 +9,85 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\CinemaScheduleController;
 use App\Http\Controllers\HallScheduleController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\AuthController;
 
-Route::apiResource('city', CityController::class);
+Route::get('/movie', [MovieController::class, 'index']);
+Route::get('/movie/{id}', [MovieController::class, 'show']);
 
-Route::apiResource('seat', SeatController::class);
+Route::get('/cinema', [CinemaController::class, 'index']);
+Route::get('/cinema/{id}', [CinemaController::class, 'show']);
 
-Route::apiResource('hall', HallController::class);
+Route::get('/hall', [HallController::class, 'index']);
+Route::get('/hall/{id}', [HallController::class, 'show']);
 
-Route::apiResource('cinema', CinemaController::class);
+Route::get('/city', [CityController::class, 'index']);
+Route::get('/city/{id}', [CityController::class, 'show']);
 
-Route::apiResource('movie', MovieController::class);
+Route::get('/schedule', [ScheduleController::class, 'index']);
+Route::get('/schedule/{id}', [ScheduleController::class, 'show']);
 
-Route::apiResource('schedule', ScheduleController::class);
+Route::get('/cinema-schedule', [CinemaScheduleController::class, 'index']);
+Route::get('/cinema-schedule/{id}', [CinemaScheduleController::class, 'show']);
 
-Route::apiResource('cinema-schedule', CinemaScheduleController::class);
+Route::get('/hall-schedule', [HallScheduleController::class, 'index']);
+Route::get('hall-schedule/{id}', [HallScheduleController::class, 'show']);
 
-Route::apiResource('hall-schedule', HallScheduleController::class);
+Route::get('/session', [SessionController::class, 'index']);
+Route::get('/session/{id}', [SessionController::class, 'show']);
 
-Route::apiResource('session', SessionController::class);
+Route::get('/seat', [SeatController::class, 'index']);
+Route::get('/seat/{id}', [SeatController::class, 'show']);
+
+Route::middleware(['auth:api', 'permission:manage movie'])->group(function () {
+    Route::post('/movie', [MovieController::class, 'store']);
+    Route::patch('/movie/{id}', [MovieController::class, 'update']);
+    Route::delete('/movie/{id}', [MovieController::class, 'destroy']);
+});
+
+Route::middleware(['auth:api', 'permission:manage cinema'])->group(function () {
+    Route::post('/cinema', [CinemaController::class, 'store']);
+    Route::patch('/cinema/{id}', [CinemaController::class, 'update']);
+    Route::delete('/cinema/{id}', [CinemaController::class, 'destroy']);
+});
+
+Route::middleware(['auth:api', 'permission:manage hall'])->group(function () {
+    Route::post('/hall', [HallController::class, 'store']);
+    Route::patch('/hall/{id}', [HallController::class, 'update']);
+    Route::delete('/hall/{id}', [HallController::class, 'destroy']);
+});
+
+Route::middleware(['auth:api', 'permission:manage city'])->group(function () {
+    Route::post('/city', [CityController::class, 'store']);
+    Route::patch('/city/{id}', [CityController::class, 'update']);
+    Route::delete('/city/{id}', [CityController::class, 'destroy']);
+});
+
+Route::middleware(['auth:api', 'permission:manage schedule'])->group(function () {
+    Route::post('/cinema-schedule', [CinemaScheduleController::class, 'store']);
+    Route::patch('/cinema-schedule/{id}', [CinemaScheduleController::class, 'update']);
+    Route::delete('/cinema-schedule/{id}', [CinemaScheduleController::class, 'destroy']);
+
+    Route::post('/hall-schedule', [HallScheduleController::class, 'store']);
+    Route::patch('/hall-schedule/{id}', [HallScheduleController::class, 'update']);
+    Route::delete('/hall-schedule/{id}', [HallScheduleController::class, 'destroy']);
+
+    Route::post('/session', [SessionController::class, 'store']);
+    Route::patch('/session/{id}', [SessionController::class, 'update']);
+    Route::delete('/session/{id}', [SessionController::class, 'destroy']);
+
+    Route::post('/seat', [SeatController::class, 'store']);
+    Route::patch('/seat/{id}', [SeatController::class, 'update']);
+    Route::delete('/seat/{id}', [SeatController::class, 'destroy']);
+});
+
+Route::group([
+    'prefix' => 'auth'
+], function () {
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
+
+    Route::middleware('auth:api')->group(function () {
+        Route::post('/logout', [AuthController::class, 'logout']);
+        Route::get('/me', [AuthController::class, 'me']);
+    });
+});

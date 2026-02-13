@@ -6,6 +6,8 @@ use App\Models\Cinema;
 use Illuminate\Http\Request;
 use App\Http\Resources\CinemaResource;
 use App\Dto\GetCinemasDto;
+use App\Dto\CinemaDto;
+use App\Dto\PartialCinemaDto;
 
 class CinemaController extends Controller
 {
@@ -13,28 +15,26 @@ class CinemaController extends Controller
     {
         $dto = GetCinemasDto::fromRequest($request);
 
-        $cinemas = Cinema::where('city_id', $dto->cityId)->get();
+        if ($dto->cityId !== null) {
+            $cinemas = Cinema::where('city_id', $dto->cityId)->get();
+            return CinemaResource::collection($cinemas);
+        }
 
-        return CinemaResource::collection($cinemas);
+        return CinemaResource::collection(Cinema::all());
+    }
+
+        public function show($id)
+    {
+        $cinema = Cinema::findOrFail($id);
+        return new CinemaResource($cinema);
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'city_id' => 'required|exists:cities,id',
-            'address' => 'required|string|max:255',
-            'lat' => 'nullable|numeric',
-            'long' => 'nullable|numeric',
-        ]);
+        $dto = CinemaDto::fromRequest($request);
 
-        $cinema = Cinema::create($validated);
+        $cinema = Cinema::create($dto->toArray());
 
-        return response()->json($cinema, 201);
-    }
-
-    public function show($id)
-    {
-        $cinema = Cinema::findOrFail($id);
         return new CinemaResource($cinema);
     }
 
@@ -42,16 +42,11 @@ class CinemaController extends Controller
     {
         $cinema = Cinema::findOrFail($id);
 
-        $validated = $request->validate([
-            'city_id' => 'sometimes|exists:cities,id',
-            'address' => 'sometimes|string|max:255',
-            'lat' => 'nullable|numeric',
-            'long' => 'nullable|numeric',
-        ]);
+        $dto = PartialCinemaDto::fromRequest($request);
 
-        $cinema->update($validated);
+        $cinema->update($dto->toArray());
 
-        return response()->json($cinema);
+        return new CinemaResource($cinema);
     }
 
     public function destroy($id)
@@ -59,6 +54,6 @@ class CinemaController extends Controller
         $cinema = Cinema::findOrFail($id);
         $cinema->delete();
 
-        return response()->json(['message' => 'Cinema deleted']);
+        return response()->noContent();
     }
 }

@@ -4,53 +4,51 @@ namespace App\Http\Controllers;
 
 use App\Models\City;
 use Illuminate\Http\Request;
+use App\Dto\CityDto;
+use App\Dto\PartialCityDto;
+use App\Http\Resources\CityResource;
 
 class CityController extends Controller
 {
     public function index()
     {
-        return City::all();
+        $all = City::all();
+
+        return CityResource::collection($all);
     }
 
-    public function show($id)
+    public function show(string $id)
     {
         $city = City::findOrFail($id);
-        return $city;
+
+        return new CityResource($city);
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'lat' => 'required|numeric',
-            'long' => 'required|numeric',
-        ]);
+        $dto = CityDto::fromRequest($request);
 
-        $city = City::create($validated);
+        $city = City::create($dto->toArray());
 
-        return response()->json($city, 201);
+        return new CityResource($city);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, string $id)
     {
         $city = City::findOrFail($id);
 
-        $validated = $request->validate([
-            'name' => 'sometimes|string|max:255',
-            'lat' => 'sometimes|numeric',
-            'long' => 'sometimes|numeric',
-        ]);
+        $dto = PartialCityDto::fromRequest($request);
 
-        $city->update($validated);
+        $city->update($dto->toArray());
 
-        return response()->json($city);
+        return new CityResource($city);
     }
 
-    public function destroy($id)
+    public function destroy(string $id)
     {
         $city = City::findOrFail($id);
         $city->delete();
 
-        return response()->json(null, 204);
+        return response()->noContent();
     }
 }
