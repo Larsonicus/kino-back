@@ -8,13 +8,15 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Resources\HallResource;
 use App\Dto\HallDto;
 use App\Dto\PartialHallDto;
+use App\Dto\GetHallsDto;
 
 class HallController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $halls = Hall::all();
+        $dto = GetHallsDto::fromRequest($request);
 
+        $halls = $dto->cinemaId !== null ? Hall::where('cinema_id', $dto->cinemaId)->get() : Hall::all();
         return HallResource::collection($halls);
     }
 
