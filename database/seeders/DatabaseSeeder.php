@@ -23,10 +23,7 @@ class DatabaseSeeder extends Seeder
             HallsTableSeeder::class,
             SeatsTableSeeder::class,
             MoviesTableSeeder::class,
-            SchedulesTableSeeder::class,
-            CinemaSchedulesTableSeeder::class,
-            HallSchedulesTableSeeder::class,
-            HallsSessionsTableSeeder::class,
+            ScheduleSeeder::class,
             SessionsSeatsReserveTableSeeder::class,
             PermissionsSeeder::class
         ]);
