@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Seat;
 use Illuminate\Http\Request;
+use App\Http\Resources\SeatResource;
 
 class SeatController extends Controller
 {
     public function index()
     {
         $seats = Seat::get();
-        return response()->json($seats);
+        return SeatResource::collection($seats);
     }
 
     public function store(Request $request)
