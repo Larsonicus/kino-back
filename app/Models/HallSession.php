@@ -32,4 +32,9 @@ class HallSession extends Model
     {
         return $this->belongsTo(Hall::class, 'hall_id');
     }
+
+    public function reservedSeats()
+    {
+        return $this->hasMany(SessionSeatReserve::class, 'session_id');
+    }
 }

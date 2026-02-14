@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Session;
+use App\Models\HallSession;
 use App\Models\Seat;
 use Illuminate\Support\Facades\DB;
 
@@ -11,7 +11,7 @@ class SessionsSeatsReserveTableSeeder extends Seeder
 {
     public function run(): void
     {
-        $sessions = Session::all();
+        $sessions = HallSession::all();
 
         foreach ($sessions as $session) {
             $allSeats = Seat::where('hall_id', $session->hall_id)->get();

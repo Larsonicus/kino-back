@@ -12,6 +12,7 @@ class ScheduleController extends Controller
     public function index(Request $request)
     {
         $dto = GetSchedulesDto::fromRequest($request);
+        $cityId = $dto->cityId;
 
         $schedules = Schedule::with([
             'movie',
@@ -21,17 +22,23 @@ class ScheduleController extends Controller
         ])
         ->whereDate('date', $dto->date)
         ->get()
-        ->map(function($schedule) {
+        ->map(function($schedule) use ($cityId) {
             $schedule->setRelation('cinemaSchedules',
-                $schedule->cinemaSchedules->filter(function($cinemaSchedule) {
-                    return $cinemaSchedule->hallSchedules->isNotEmpty();
+                $schedule->cinemaSchedules->filter(function($cinemaSchedule) use ($cityId) {
+                    return $cinemaSchedule->cinema->city_id == $cityId
+                        && $cinemaSchedule->hallSchedules->isNotEmpty();
                 })
             );
+
             return $schedule;
+        })
+        ->filter(function($schedule) {
+            return $schedule->cinemaSchedules->isNotEmpty();
         });
 
         return ScheduleResource::collection($schedules);
     }
+
 
     public function store(Request $request)
     {

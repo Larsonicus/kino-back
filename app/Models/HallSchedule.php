@@ -23,6 +23,6 @@ class HallSchedule extends Model
 
     public function sessions()
     {
-        return $this->hasMany(Session::class, 'hall_schedule_id');
+        return $this->hasMany(HallSession::class, 'hall_schedule_id');
     }
 }

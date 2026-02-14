@@ -20,6 +20,6 @@ class Seat extends Model
 
     public function sessions()
     {
-        return $this->belongsToMany(Session::class, 'sessions_seats_reserve')->withTimestamps();
+        return $this->belongsToMany(HallSession::class, 'sessions_seats_reserve')->withTimestamps();
     }
 }

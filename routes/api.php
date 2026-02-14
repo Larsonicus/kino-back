@@ -10,6 +10,10 @@ use App\Http\Controllers\CinemaScheduleController;
 use App\Http\Controllers\HallScheduleController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\OrderController;
+
+Route::get('/calendar', [CalendarController::class, 'index']);
 
 Route::get('/movie', [MovieController::class, 'index']);
 Route::get('/movie/{id}', [MovieController::class, 'show']);
@@ -78,6 +82,11 @@ Route::middleware(['auth:api', 'permission:manage schedule'])->group(function ()
     Route::post('/seat', [SeatController::class, 'store']);
     Route::patch('/seat/{id}', [SeatController::class, 'update']);
     Route::delete('/seat/{id}', [SeatController::class, 'destroy']);
+});
+
+Route::middleware('auth:api')->group(function () {
+    Route::post('/order', [OrderController::class, 'store']);
+    Route::get('/order', [OrderController::class, 'index']);
 });
 
 Route::group([
